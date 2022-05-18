@@ -70,6 +70,9 @@
   <form  method="GET">
     <button type="submit" class="btn btn-primary">返回</button>
   </form>
+  <form action="/" method="GET">
+    <button type="submit" class="btn btn-primary">返回主页</button>
+  </form>
 
   {% if graphdate != "" %}
   <div id="line" style="width:1000px; height:500px;"></div>
@@ -80,7 +83,6 @@
     chart.setOption( ttt ) ;
   </script>
   {% endif %}
-</script>
 
 <script>
   $("#datetime1").datetimepicker({

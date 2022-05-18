@@ -13,3 +13,12 @@ def searchGlobal(data):
     for i in range(5):
         qaz.append([attr[i],value[i]])
     return qaz
+
+def getCity(country):
+    return ['稻香','晴天','等你下课']
+
+def getHospital(country, city):
+    return ['lkh','love','qaz']
+
+def update(country, city, hospital, passwd, number, state):
+    return True

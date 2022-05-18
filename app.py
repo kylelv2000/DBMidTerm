@@ -1,5 +1,4 @@
-from flask import Flask, request, render_template
-
+from flask import Flask, request, render_template, redirect, url_for, jsonify
 import sqlsolve
 import graphs
 
@@ -8,7 +7,17 @@ app._static_folder = "./templates/static"
 
 @app.route('/')
 def hello_world():
-    return 'Hello, World!'
+    return render_template('index.html'
+                            )
+@app.route('/', methods=['POST'])
+def post_index():
+    page = request.form['options']
+    if(page == '1'):
+        return redirect(url_for('get_p1'))
+    elif(page == '2'):
+        return redirect(url_for('get_p2'))
+    elif(page == '3'):
+        return redirect(url_for('get_p3'))
 
 
 @app.route('/p1', methods=['POST'])
@@ -45,7 +54,7 @@ def get_p1():
 def post_p2():
     date = request.form['begintime']    #'2019/01/01'
 
-    infos = sqlsolve.searchGlobal(date)   #return [(国家名, 现存？)]
+    infos = sqlsolve.searchGlobal(date)   #return [[国家名, 现存?], ...]
     c = graphs.makeMapGraph(infos, date)
     
     return render_template('p2.html',
@@ -56,12 +65,54 @@ def post_p2():
 
 @app.route('/p2', methods=['GET'])
 def get_p2():
-    countries = sqlsolve.getAllCountries() #返回数组 例：['zg','sa','sd']
     return render_template('p2.html',
                            begintime = "",
                            graphdate = ""
                             )
 
+
+@app.route('/p3', methods=['POST'])
+def post_p3():
+    data = request.get_json()
+    country = data['country']
+    city = data['city']
+    hospital = data['hospital']
+    passwd = data['passwd']
+    number = data['number']
+    state = data['state']
+    sqlsolve.update(country, city, hospital, passwd, number, state)
+    
+    return render_template('p3.html'
+                            )
+
+
+@app.route('/p3', methods=['GET'])
+def get_p3():
+    countries = sqlsolve.getAllCountries() #返回数组 例：['zg','sa','sd']
+    return render_template('p3.html',
+                            countries = countries,
+                            )
+
+@app.route('/selectfieldcity/', methods=['GET', 'POST'])
+def selectfieldcity():
+    if request.method == "POST":
+        data = request.get_json()
+        country = data['name']
+        city = sqlsolve.getCity(country)  #返回数组 例：['zg','sa','sd']
+        return jsonify(city)
+    else:
+        return {}
+
+@app.route('/selectfieldhospital/', methods=['GET', 'POST'])
+def selectfieldhospital():
+    if request.method == "POST":
+        data = request.get_json()
+        country = data['country']
+        city = data['name']
+        hospital = sqlsolve.getHospital(country, city)  #返回数组 例：['zg','sa','sd']
+        return jsonify(hospital)
+    else:
+        return {}
 
 if __name__ =="__main__":
     app.run(debug=True, port=8080)

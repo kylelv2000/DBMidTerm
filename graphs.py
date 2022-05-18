@@ -7,7 +7,7 @@ def makeLineGraph(infos, time_list):           # [[新增],[死亡],[康复]]
         .add_xaxis(time_list)
         .add_yaxis("新增",
                    y_axis=infos[0],
-                   color='red',
+                   color='green',
                    label_opts=opts.LabelOpts(is_show=False),
                    is_smooth=True)
         .add_yaxis("死亡",
@@ -17,7 +17,7 @@ def makeLineGraph(infos, time_list):           # [[新增],[死亡],[康复]]
                    is_smooth=True)
         .add_yaxis("康复",
                    y_axis=infos[2],
-                   color='green',
+                   color='red',
                    label_opts=opts.LabelOpts(is_show=False),
                    is_smooth=True)
 
