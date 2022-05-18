@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <!-- 必须的 meta 标签 -->
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- bootstrap样式表 -->
+<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+
+<!-- jquery -->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- bootstrap脚本 -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <title>qaz</title>
+</head>
+
+<body>
+  <div >
+    <form>
+      <label>国家:</label>
+      <select name="country_selection" id="country_selection"
+              onchange="changefield('country_selection',city_selection,'/selectfieldcity/')">
+        <option selected='selected' disabled='disabled'  style='display: none' value=''></option>
+        {% for ct in countries %}
+          <option value = "{{ct}}">{{ct}}</option>"
+        {% endfor %}
+      </select>
+    </form>
+  </div>
+  <div class="am-u-lg-3 am-u-md-3 am-u-sm-3 am-u-sm-offset-3">
+    <form class="am-form">
+        <label> 地区：</label>
+        <select name="city_selection" id="city_selection"
+                onchange="changefield('city_selection',hospital_selection,'/selectfieldhospital/', 'country_selection')">
+            {# 这里空着 等待获取后端返回的数据再写 #}
+        </select>
+        <br>
+    </form>
+  </div>
+  <div class="am-u-lg-3 am-u-md-3 am-u-sm-3 am-u-sm-offset-3">
+    <form class="am-form">
+        <label> 医院：</label>
+        <select name="hospital_selection" id="hospital_selection">
+            {# 这里空着 等待获取后端返回的数据再写 #}
+        </select>
+        <br>
+    </form>
+  </div>
+  <form class="form-inline">
+    <div class="form-group">
+      <label for="inputPassword6">Password</label>
+      <input type="password" id="inputPassword6" class="form-control mx-sm-3" aria-describedby="passwordHelpInline">
+      <small id="passwordHelpInline" class="text-muted">
+        Must be 8-20 characters long.
+      </small>
+    </div>
+  </form>
+  <div class="mb-3">
+    <div class="input-group is-invalid">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="validatedInputGroupPrepend">病人ID</span>
+      </div>
+      <input type="number" id="pnumber" class="form-control is-invalid" aria-describedby="validatedInputGroupPrepend" required>
+    </div>
+    <div class="invalid-feedback">
+      Please enter a number in the textarea.
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <select class="custom-select" id="mystate" required>
+      <option value=0>状态</option>
+      <option value=1>患病</option>
+      <option value=2>康复</option>
+      <option value=3>康复</option>
+    </select>
+    <div class="invalid-feedback"></div>
+  </div>
+
+ 
+  <button type="button" id="btn_submit" class="btn btn-primary">提交</button>
+
+
+  <form  method="GET">
+    <button type="submit" class="btn btn-primary">返回</button>
+  </form>
+
+  <form action="/" method="GET">
+    <button type="submit" class="btn btn-primary">返回主页</button>
+  </form>
+
+
+</body>
+<script>
+  $('#btn_submit').click(function(){
+    var data;
+    var country = document.getElementById('country_selection').value;
+    var city = document.getElementById('city_selection').value;
+    var hospital = document.getElementById('hospital_selection').value;
+    var passwd = document.getElementById('inputPassword6').value;
+    var number = document.getElementById('pnumber').value;
+    var state = document.getElementById('mystate').value;
+
+    if(country == '' || city == '' || hospital == '' || passwd == '' || number == 0 || state == 0){
+      alert("请完整填写！");
+      return;
+    }
+    data = {
+      "country": country,
+      "city": city,
+      "hospital": hospital,
+      "passwd": passwd,
+      "number": number,
+      "state": state
+    };
+    $.post({ //发起ajax请求
+          url: '/p3',
+          type: "POST",
+          data: JSON.stringify(data),
+          contentType: "application/json; charset=UTF-8"
+        });
+  });
+</script>
+<script>
+  function changefield(choose, id, url, countrys = '') {
+    var data;
+    var select = document.getElementById(choose);
+    $(id).html(""); //每次重新选择当前列表框，就清空下一级列表框。
+    for (i = 0; i < select.length; i++) {
+      if (select[i].selected) { //判断被选中项
+        Name = select[i].text;
+        if(countrys != ''){
+          var select0 = document.getElementById(countrys);
+          var ct;
+          for (j = 0; j < select0.length; j++) {
+            if (select0[j].selected) {
+              ct = select0[j].text;
+              break;
+            }
+          }
+          data = {
+            "name": Name,
+            "country": ct
+          };
+        }else{
+          data = {
+            "name": Name
+          };
+        }
+        
+        $.post({ //发起ajax请求
+          url: url,
+          type: "POST",
+          data: JSON.stringify(data),
+          {#dataType:'json'#}
+          contentType: "application/json; charset=UTF-8",
+          success: function (data) {
+            {#console.log(data.length);#}
+            if (data) {
+              $("<option selected='selected' disabled='disabled'  style='display: none' value=''></option> ").appendTo(id);
+              for (i = 0; i < data.length; i++) {
+                $("<option value='" + data[i] + "'>" + data[i] + "</option>").appendTo(id);
+              }
+            } else {
+              alert('error')
+            }
+          }
+        });
+      }
+    }
+  }
+</script>
+
+</html>
