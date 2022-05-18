@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <!-- 必须的 meta 标签 -->
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- bootstrap样式表 -->
+<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- 时间选择器样式表 -->
+<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+
+<!-- jquery -->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- bootstrap脚本 -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- 时间选择器前置脚本 -->
+<script src="https://cdn.bootcss.com/moment.js/2.22.1/moment-with-locales.min.js"></script>
+
+<!-- 时间选择器核心脚本 -->
+<script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+
+<script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
+<script type="text/javascript" src="https://assets.pyecharts.org/assets/maps/china.js"></script>
+
+  <title>qaz</title>
+</head>
+
+<body>
+  <form  method="POST">
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label>查询时间</label>
+        <div class="col">
+          {% if begintime != "" %}
+          <input name = 'begintime' type="text" value = {{begintime}}>
+          {% else %}
+          <input name = 'begintime' type="text" id="datetime1"  placeholder="开始时间">
+          {% endif %}
+        </if>
+
+          
+        </div>
+        <div class="col">
+          {% if endtime != "" %}
+          <input name = 'endtime' type="text"  value = {{endtime}} >
+          {% else %}
+          <input name = 'endtime' type="text" id="datetime2"   placeholder="结束时间">
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <label>国家/地区</label>
+    <select name = 'countries' method="GET" action="/p1" >
+      {% for ct in countries %}
+      <option value = "{{ct}}" SELECTED>{{ct}}</option>"
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">查询</button>
+  </form>
+
+  <form  method="GET">
+    <button type="submit" class="btn btn-primary">返回</button>
+  </form>
+  <form action="/" method="GET">
+    <button type="submit" class="btn btn-primary">返回主页</button>
+  </form>
+
+  {% if graphdate != "" %}
+  <div id="line" style="width:1000px; height:500px;"></div>
+  <script  type="text/javascript">
+
+    var chart = echarts.init(document.getElementById('line'), 'white', {renderer: 'canvas'});
+    var ttt = {{ graphdate | safe }};
+    chart.setOption( ttt ) ;
+  </script>
+  {% endif %}
+
+<script>
+  $("#datetime1").datetimepicker({
+      format: 'YYYY-MM-DD',
+      locale: moment.locale('zh-CN'),
+      minDate: 2019/01/01
+    });
+
+  $("#datetime2").datetimepicker({
+      format: 'YYYY-MM-DD',
+      locale: moment.locale('zh-CN'),
+      minDate: 2019/01/01
+    });
+</script>
+</body>
+</html>
