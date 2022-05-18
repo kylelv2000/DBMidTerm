@@ -5,7 +5,10 @@
 USE master;
 DROP DATABASE IF EXISTS CovidData;
 CREATE DATABASE CovidData;
+GO
+
 USE CovidData;
+GO
 
 /*==============================================================*/
 /* Table: Country                                               */
@@ -57,10 +60,10 @@ CREATE TABLE Infection
    ISO                  char(3)                        NOT NULL,
    "New Cases"          integer,
    "New Deaths"         integer,
-   "New Recovery"       integer,
+   "New Recovered"       integer,
    "Total Cases"        integer,
    "Total Deaths"       integer,
-   "Total Recovery"     integer,
+   "Total Recovered"     integer,
    CONSTRAINT PK_INFECTION PRIMARY KEY ("Date", ISO)
 );
 
@@ -79,8 +82,8 @@ CREATE TABLE Patients
    ID                   varchar(32)                      NOT NULL,
    Hospital#            varchar(32),
    Status               char(16),
-   "Date Admitted"      date,
-   "Date Leave"         date,
+   "Date Admitted"      datetime,
+   "Date Leave"         datetime,
    CONSTRAINT PK_PATIENTS PRIMARY KEY (ID),
    CONSTRAINT CHK_STATUS CHECK(Status IN ('In Hospital', 'Dead', 'Recovered'))
 );
@@ -97,11 +100,11 @@ Hospital# ASC
 /*==============================================================*/
 CREATE TABLE Updates 
 (
-   "Date"               date                           NOT NULL,
+   "Date"               datetime                       NOT NULL,
    Hospital#            varchar(32)                    NOT NULL,
    Cases                integer,
    Deaths               integer,
-   Recovery             integer,
+   Recovered            integer,
    CONSTRAINT PK_UPDATES PRIMARY KEY ("Date", Hospital#)
 );
 
