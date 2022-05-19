@@ -52,7 +52,7 @@ def get_p1():
 
 @app.route('/p2', methods=['POST'])
 def post_p2():
-    date = request.form['begintime']    #'2019/01/01'
+    date = request.form['begintime']    #'2019-01-01'
 
     infos = sqlsolve.searchGlobal(date)   #return [[国家名, 现存?], ...]
     c = graphs.makeMapGraph(infos, date)
