@@ -41,6 +41,7 @@ CREATE TABLE Hospital
    Name                 varchar(256),
    N_Patients           integer,
    Password             varchar(64),
+   LastReport           datetime,
    CONSTRAINT PK_HOSPITAL PRIMARY KEY (Hospital#)
 );
 
@@ -81,7 +82,7 @@ CREATE TABLE Patients
 (
    ID                   varchar(32)                      NOT NULL,
    Hospital#            varchar(32),
-   Status               char(16),
+   Status               varchar(16),
    "Date Admitted"      datetime,
    "Date Leave"         datetime,
    CONSTRAINT PK_PATIENTS PRIMARY KEY (ID),
