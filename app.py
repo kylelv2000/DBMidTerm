@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 from flask import Flask, request, render_template, redirect, url_for, jsonify
 import sqlsolve
 import graphs
@@ -52,7 +53,7 @@ def get_p1():
 
 @app.route('/p2', methods=['POST'])
 def post_p2():
-    date = request.form['begintime']    #'2019-01-01'
+    date = request.form['begintime']    #'2019/01/01'
 
     infos = sqlsolve.searchGlobal(date)   #return [[国家名, 现存?], ...]
     c = graphs.makeMapGraph(infos, date)
@@ -80,10 +81,10 @@ def post_p3():
     passwd = data['passwd']
     number = data['number']
     state = data['state']
-    sqlsolve.update(country, city, hospital, passwd, number, state)
+    code,msg = sqlsolve.update(country, city, hospital, passwd, number, state)
+    tables = sqlsolve.get_hospital_table(hospital, passwd)
     
-    return render_template('p3.html'
-                            )
+    return jsonify([code,msg,tables])
 
 
 @app.route('/p3', methods=['GET'])
@@ -92,6 +93,16 @@ def get_p3():
     return render_template('p3.html',
                             countries = countries,
                             )
+
+@app.route('/updatehospital', methods=['POST'])
+def updatehospital():
+    data = request.get_json()
+    hospital = data['hospital']
+    passwd = data['passwd']
+    code,msg = sqlsolve.update_hospital(hospital, passwd)
+    tables = sqlsolve.get_hospital_table(hospital, passwd)
+    
+    return jsonify([code,msg,tables])
 
 @app.route('/selectfieldcity/', methods=['GET', 'POST'])
 def selectfieldcity():

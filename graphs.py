@@ -32,10 +32,11 @@ def makeLineGraph(infos, time_list):           # [[新增],[死亡],[康复]]
 def makeMapGraph(infos, date):
     c = (
         Map()
-        .add("世界地图", infos , "world")
+        .add("现存病例", infos , "world")
         .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
         .set_global_opts(
-            title_opts=opts.TitleOpts(title="{}世界各地疫情情况".format(date)),
+            title_opts=opts.TitleOpts(title="{}世界各地疫情情况".format(date),pos_left='center', pos_top='5%'),
+            visualmap_opts=opts.VisualMapOpts(max_=max([_[1] for _ in infos])),
         )
     )
     return c
