@@ -104,6 +104,15 @@ def updatehospital():
     
     return jsonify([code,msg,tables])
 
+@app.route('/display', methods=['POST'])
+def display():
+    data = request.get_json()
+    hospital = data['hospital']
+    passwd = data['passwd']
+    code, tables = sqlsolve.get_hospital_table(hospital, passwd)
+    
+    return jsonify([code, tables])
+
 @app.route('/selectfieldcity/', methods=['GET', 'POST'])
 def selectfieldcity():
     if request.method == "POST":

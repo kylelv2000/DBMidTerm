@@ -75,6 +75,7 @@
       </form>
       </div>
       <div class="col-xs-1 col-sm-1 ">
+        <button type="button" id="btn_display" class="btn btn-primary">查询信息</button>
       </div>
       <div class="col-xs-3 col-sm-3 ">
         <button type="button" id="btn_upd_hospital" class="btn btn-primary">上传更新医院信息</button>
@@ -178,6 +179,39 @@ $('#btn_upd_hospital').click(function(){
             alert(data[1]);
             if(data[0] == '0')
               createShowingTable(data[2][1]);
+          } else {
+            alert('unknown error');
+          }
+        }
+      });
+});
+$('#btn_display').click(function(){
+  var data;
+  var country = document.getElementById('country_selection').value;
+  var city = document.getElementById('city_selection').value;
+  var hospital = document.getElementById('hospital_selection').value;
+  var passwd = document.getElementById('inputPassword6').value;
+  if(hospital == '' || passwd == ''){
+    alert("请完整填写！");
+    return;
+  }
+  data = {
+    "country": country,
+    "city": city,
+    "hospital": hospital,
+    "passwd": passwd
+  };
+  $.post({ //发起ajax请求
+        url: '/display',
+        type: "POST",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=UTF-8",
+        success: function (data) {
+          if (data) {
+            if(data[0] == '0')
+              createShowingTable(data[1]);
+            else 
+              alert(data[1]);
           } else {
             alert('unknown error');
           }
