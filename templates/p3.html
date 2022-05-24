@@ -7,93 +7,110 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- bootstrap样式表 -->
-<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
 
+  <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}"></script>
 
-<!-- jquery -->
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-
-<!-- bootstrap脚本 -->
-<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
 
   <title>qaz</title>
 </head>
 
 <body>
-  <div >
-    <form>
-      <label>国家:</label>
-      <select name="country_selection" id="country_selection"
-              onchange="changefield('country_selection',city_selection,'/selectfieldcity/')">
-        <option selected='selected' disabled='disabled'  style='display: none' value=''></option>
-        {% for ct in countries %}
-          <option value = "{{ct}}">{{ct}}</option>"
-        {% endfor %}
-      </select>
-    </form>
+  <div class="page-header"  style="text-align:center">
+    <h1>医院数据更新</h1>
   </div>
-  <div class="am-u-lg-3 am-u-md-3 am-u-sm-3 am-u-sm-offset-3">
-    <form class="am-form">
-        <label> 地区：</label>
-        <select name="city_selection" id="city_selection"
-                onchange="changefield('city_selection',hospital_selection,'/selectfieldhospital/', 'country_selection')">
-            {# 这里空着 等待获取后端返回的数据再写 #}
-        </select>
-        <br>
-    </form>
-  </div>
-  <div class="am-u-lg-3 am-u-md-3 am-u-sm-3 am-u-sm-offset-3">
-    <form class="am-form">
-        <label> 医院：</label>
-        <select name="hospital_selection" id="hospital_selection">
-            {# 这里空着 等待获取后端返回的数据再写 #}
-        </select>
-        <br>
-    </form>
-  </div>
-  <form class="form-inline">
-    <div class="form-group">
-      <label for="inputPassword6">Password</label>
-      <input type="password" id="inputPassword6" class="form-control mx-sm-3" aria-describedby="passwordHelpInline">
-      <small id="passwordHelpInline" class="text-muted">
-        Must be 8-20 characters long.
-      </small>
-    </div>
-  </form>
-  <div class="mb-3">
-    <div class="input-group is-invalid">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="validatedInputGroupPrepend">病人ID</span>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-6 col-sm-3">
+        <form>
+          <label>国家:</label>
+          <select name="country_selection" id="country_selection"
+                  onchange="changefield('country_selection',city_selection,'/selectfieldcity/')">
+            <option selected='selected' disabled='disabled'  style='display: none' value=''></option>
+            {% for ct in countries %}
+              <option value = "{{ct}}">{{ct}}</option>"
+            {% endfor %}
+          </select>
+        </form>
       </div>
-      <input type="number" id="pnumber" class="form-control is-invalid" aria-describedby="validatedInputGroupPrepend" required>
-    </div>
-    <div class="invalid-feedback">
-      Please enter a number in the textarea.
-    </div>
-  </div>
 
-  <div class="mb-3">
-    <select class="custom-select" id="mystate" required>
-      <option value=0>状态</option>
-      <option value=1>患病</option>
-      <option value=2>康复</option>
-      <option value=3>康复</option>
-    </select>
-    <div class="invalid-feedback"></div>
+      <div class="col-xs-6 col-sm-3">
+            <label> 地区：</label>
+            <select name="city_selection" id="city_selection"
+                    onchange="changefield('city_selection',hospital_selection,'/selectfieldhospital/', 'country_selection')">
+                {# 这里空着 等待获取后端返回的数据再写 #}
+            </select>
+        </form>
+      </div>
+
+      <div class="col-xs-6 col-sm-3">
+            <label> 医院：</label>
+            <select name="hospital_selection" id="hospital_selection">
+                {# 这里空着 等待获取后端返回的数据再写 #}
+            </select>
+        </form>
+      </div>  
+      <div class="col-xs-1 col-sm-1">
+      <form  method="GET">
+        <button type="submit" class="btn btn-primary">返回</button>
+      </form></div>
+
+      <div class="col-xs-2 col-sm-2">
+      <form action="/" method="GET">
+        <button type="submit" class="btn btn-primary">返回主页</button>
+      </form></div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-6 col-sm-6 ">
+      <form class="form-inline">
+        <div class="form-group">
+          <label for="inputPassword6">Password</label>
+          <input type="password" id="inputPassword6" class="form-control mx-sm-3" aria-describedby="passwordHelpInline">
+          <small id="passwordHelpInline" class="text-muted">
+            Must be 6-20 characters long.
+          </small>
+        </div>
+      </form>
+      </div>
+      <div class="col-xs-1 col-sm-1 ">
+      </div>
+      <div class="col-xs-3 col-sm-3 ">
+        <button type="button" id="btn_upd_hospital" class="btn btn-primary">上传更新医院信息</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6 col-sm-6 ">
+        <div class="input-group is-invalid">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="validatedInputGroupPrepend">病人ID</span>
+          </div>
+          <input type="number" id="pnumber" class="form-control is-invalid" aria-describedby="validatedInputGroupPrepend" required>
+        </div>
+        <div class="invalid-feedback">
+          Please enter a number in the textarea.
+        </div>
+      </div>
+      <div class="col-xs-4 col-sm-4 ">
+        <select class="custom-select" id="mystate" required>
+          <option value=0>状态</option>
+          <option value=1>患病</option>
+          <option value=2>死亡</option>
+          <option value=3>康复</option>
+        </select>
+        <div class="invalid-feedback"></div>
+      </div>
+      <div class="col-xs-1 col-sm-1 ">
+        <button type="button" id="btn_submit" class="btn btn-primary">提交</button>
+      </div>
+    </div>
+
+    <div id="tableAjax" style="text-align:center">
+    </div>
   </div>
 
  
-  <button type="button" id="btn_submit" class="btn btn-primary">提交</button>
-
-
-  <form  method="GET">
-    <button type="submit" class="btn btn-primary">返回</button>
-  </form>
-
-  <form action="/" method="GET">
-    <button type="submit" class="btn btn-primary">返回主页</button>
-  </form>
 
 
 </body>
@@ -123,9 +140,108 @@
           url: '/p3',
           type: "POST",
           data: JSON.stringify(data),
-          contentType: "application/json; charset=UTF-8"
+          contentType: "application/json; charset=UTF-8",
+          success: function (data) {
+            if (data) {
+              alert(data[1]);
+              if(data[0] == '0')
+                createShowingTable(data[2][1]);
+            } else {
+              alert('unknown error');
+            }
+          }
         });
   });
+$('#btn_upd_hospital').click(function(){
+  var data;
+  var country = document.getElementById('country_selection').value;
+  var city = document.getElementById('city_selection').value;
+  var hospital = document.getElementById('hospital_selection').value;
+  var passwd = document.getElementById('inputPassword6').value;
+  if(hospital == '' || passwd == ''){
+    alert("请完整填写！");
+    return;
+  }
+  data = {
+    "country": country,
+    "city": city,
+    "hospital": hospital,
+    "passwd": passwd
+  };
+  $.post({ //发起ajax请求
+        url: '/updatehospital',
+        type: "POST",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=UTF-8",
+        success: function (data) {
+          if (data) {
+            alert(data[1]);
+            if(data[0] == '0')
+              createShowingTable(data[2][1]);
+          } else {
+            alert('unknown error');
+          }
+        }
+      });
+});
+
+function createShowingTable(data) {
+
+var tableStr = "<table class='tab-list' width='95%'>";
+
+tableStr = tableStr
+
+  + "<tr class='list-header'>"
+
+  +"<td width='20%'>ID</td>"
+
+
+  +"<td width='15%'>状态</td>"
+
+  +"<td width='30%'>入院日期</td>"
+
+  +"<td width='30%'>出院日期</td>"
+
+
+  +"</tr>";
+
+var len = data.length;
+
+for ( var i = 0; i < len; i++) {
+
+ tableStr = tableStr + "<tr>"
+
+
+   + "<td>" + data[i][0]+" </td>"
+
+   + "<td>" + data[i][1] + "</td>"
+
+   + "<td>" + data[i][2] + "</td>"
+
+   + "<td>" + data[i][3] + "</td>"
+
+
+   +"</tr>";
+
+}
+
+if(len==0){
+
+ tableStr = tableStr + "<tr style='text-align: center'>"
+
+ +"<td colspan='6'><font color='#cd0a0a'>"+ 暂无记录 + "</font></td>"
+
+ +"</tr>";
+
+}
+
+tableStr = tableStr + "</table>";
+
+//添加到div中
+
+$("#tableAjax").html(tableStr);
+
+}
 </script>
 <script>
   function changefield(choose, id, url, countrys = '') {
