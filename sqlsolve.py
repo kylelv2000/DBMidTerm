@@ -85,11 +85,11 @@ def getHospital(country, state):
 def update(country, city, hospital, passwd, number, state):
     hospital_id = hospital[hospital.find('(') + 1:hospital.find(')')]
     patient_id = str(number)
-    if state == '患病':
+    if state == '1':
         state = 'In Hospital'
-    elif state == '死亡':
+    elif state == '2':
         state = 'Dead'
-    elif state == '康复':
+    elif state == '3':
         state = 'Recovered'
     cursor.execute('''
         DECLARE @return int;
